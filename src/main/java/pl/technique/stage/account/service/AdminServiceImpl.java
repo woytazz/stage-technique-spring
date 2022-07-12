@@ -23,9 +23,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin readAdminById(long id) {
+    public Admin readAdminByLogin(String login) {
         //TODO throw exc
-        return repository.findById(id).orElseThrow();
+        return repository.findByLogin(login).orElseThrow();
     }
 
     @Override

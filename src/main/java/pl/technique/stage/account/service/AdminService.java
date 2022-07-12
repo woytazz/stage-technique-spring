@@ -7,8 +7,7 @@ import java.util.List;
 public interface AdminService {
     void createAdmin(Admin admin);
 
-    // TODO delete
-    Admin readAdminById(long id);
+    Admin readAdminByLogin(String login);
 
     // TODO change on paging
     List<Admin> readAllAdmin();

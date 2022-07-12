@@ -12,9 +12,8 @@ public interface AdminController {
     @PostMapping("/save")
     ResponseEntity<Void> postAdmin(@RequestBody AdminPostDto adminPostDto);
 
-    // TODO delete then
-    @GetMapping("/{id}")
-    ResponseEntity<AdminGetDto> getAdminById(@PathVariable long id);
+    @GetMapping("/{login}")
+    ResponseEntity<AdminGetDto> getAdminByLogin(@PathVariable String login);
 
     // TODO change on paging
     @GetMapping

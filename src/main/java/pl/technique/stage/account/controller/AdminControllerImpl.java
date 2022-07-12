@@ -32,10 +32,10 @@ public class AdminControllerImpl implements AdminController {
     }
 
     @Override
-    public ResponseEntity<AdminGetDto> getAdminById(long id) {
+    public ResponseEntity<AdminGetDto> getAdminByLogin(String login) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(mapper.convertToAdminGetDto(service.readAdminById(id)));
+                .body(mapper.convertToAdminGetDto(service.readAdminByLogin(login)));
     }
 
     @Override
