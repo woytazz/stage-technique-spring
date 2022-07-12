@@ -9,5 +9,4 @@ public class StageTechniqueApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StageTechniqueApplication.class, args);
 	}
-
 }
