@@ -1,5 +1,6 @@
 package pl.technique.stage.account.dto.get;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,9 +9,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CompanyGetDto extends AccountGetDto {
+    @JsonProperty("companyName")
     private String companyName;
+
+    @JsonProperty("nip")
     private String nip;
+
+    @JsonProperty("address")
     private String address;
+
+    @JsonProperty("description")
     private String description;
+
+    @JsonProperty("logoUrl")
     private String logoUrl;
 }
