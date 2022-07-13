@@ -9,7 +9,7 @@ import java.util.List;
 
 @RequestMapping("/client")
 public interface ClientController {
-    @PostMapping
+    @PostMapping("/save")
     ResponseEntity<Void> postClient(@RequestBody ClientPostDto clientPostDto);
 
     @GetMapping("/{login}")

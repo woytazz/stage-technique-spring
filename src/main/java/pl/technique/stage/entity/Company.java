@@ -27,7 +27,7 @@ public class Company extends Account {
 
     @Basic(optional = false)
     @Size(min = 10, max = 10)
-    @Column(name = "NIP", updatable = false, unique = true)
+    @Column(name = "nip", updatable = false, unique = true)
     @Getter
     @Setter
     private String nip;

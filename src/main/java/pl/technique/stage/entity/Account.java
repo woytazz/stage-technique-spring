@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-@MappedSuperclass
+@Entity
+@Table(name = "account")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account extends AbstractEntity {
     @Basic(optional = false)
     @Column(name = "login", unique = true)

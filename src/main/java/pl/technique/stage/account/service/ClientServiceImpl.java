@@ -4,21 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.technique.stage.account.repository.ClientRepository;
 import pl.technique.stage.entity.Client;
+import pl.technique.stage.util.hash.HashGenerator;
 
 import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository repository;
+    private final HashGenerator hashGenerator;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository repository) {
+    public ClientServiceImpl(ClientRepository repository, HashGenerator hashGenerator) {
         this.repository = repository;
+        this.hashGenerator = hashGenerator;
     }
 
     @Override
     public void createClient(Client client) {
-        // TODO hash password
+        client.setPassword(hashGenerator.generateHash(client.getPassword()));
         repository.save(client);
     }
 

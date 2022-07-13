@@ -15,7 +15,7 @@ public interface CompanyController {
     @GetMapping("/{login}")
     ResponseEntity<CompanyGetDto> getCompanyByLogin(@PathVariable String login);
 
-    @GetMapping("/company/{name}")
+    @GetMapping("/name/{name}")
     ResponseEntity<CompanyGetDto> getCompanyByCompanyName(@PathVariable String name);
 
     @GetMapping
