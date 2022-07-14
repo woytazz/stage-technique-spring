@@ -11,4 +11,6 @@ public interface ClientService {
 
     // TODO change on paging
     List<Client> readAllClient();
+
+    void updateClient(String login, Client client, String ETag);
 }

@@ -11,6 +11,7 @@ public interface CompanyService {
 
     Company readCompanyByCompanyName(String name);
 
-    // TODO change on paging
     List<Company> readAllCompany();
+
+    void updateCompany(String login, Company company, String ETag);
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import pl.technique.stage.account.dto.get.AdminGetDto;
+import pl.technique.stage.account.dto.patch.AdminPatchDto;
 import pl.technique.stage.account.dto.post.AdminPostDto;
 import pl.technique.stage.account.mapper.AdminMapper;
 import pl.technique.stage.account.service.AdminService;
@@ -47,5 +48,14 @@ public class AdminControllerImpl implements AdminController {
                         .map(mapper::convertToAdminGetDto)
                         .toList()
                 );
+    }
+
+    @Override
+    public ResponseEntity<Void> patchAdmin(AdminPatchDto adminPatchDto) {
+        // TODO update own admin
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 }

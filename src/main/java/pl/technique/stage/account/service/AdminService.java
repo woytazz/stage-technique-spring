@@ -11,4 +11,6 @@ public interface AdminService {
 
     // TODO change on paging
     List<Admin> readAllAdmin();
+
+    void updateAdmin(String login, Admin admin, String ETag);
 }

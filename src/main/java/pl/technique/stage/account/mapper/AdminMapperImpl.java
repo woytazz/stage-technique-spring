@@ -2,6 +2,7 @@ package pl.technique.stage.account.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.technique.stage.account.dto.get.AdminGetDto;
+import pl.technique.stage.account.dto.patch.AdminPatchDto;
 import pl.technique.stage.account.dto.post.AdminPostDto;
 import pl.technique.stage.entity.Admin;
 
@@ -42,6 +43,22 @@ public class AdminMapperImpl implements AdminMapper {
         admin.setSurname(adminPostDto.getSurname());
         admin.setEmail(adminPostDto.getEmail());
         admin.setPhoneNumber(adminPostDto.getPhoneNumber());
+
+        return admin;
+    }
+
+    @Override
+    public Admin convertToAdmin(AdminPatchDto adminPatchDto) {
+        if (adminPatchDto == null) {
+            return null;
+        }
+
+        Admin admin = new Admin();
+
+        // Account class fields
+        admin.setName(adminPatchDto.getName());
+        admin.setSurname(adminPatchDto.getSurname());
+        admin.setPhoneNumber(adminPatchDto.getPhoneNumber());
 
         return admin;
     }

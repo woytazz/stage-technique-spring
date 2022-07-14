@@ -2,6 +2,7 @@ package pl.technique.stage.account.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.technique.stage.account.dto.get.CompanyGetDto;
+import pl.technique.stage.account.dto.patch.CompanyPatchDto;
 import pl.technique.stage.account.dto.post.CompanyPostDto;
 import pl.technique.stage.entity.Company;
 
@@ -56,6 +57,27 @@ public class CompanyMapperImpl implements CompanyMapper {
         company.setAddress(companyPostDto.getAddress());
         company.setDescription(companyPostDto.getDescription());
         company.setLogoUrl(companyPostDto.getLogoUrl());
+
+        return company;
+    }
+
+    @Override
+    public Company convertToCompany(CompanyPatchDto companyPatchDto) {
+        if (companyPatchDto == null) {
+            return null;
+        }
+
+        Company company = new Company();
+
+        // Account class fields
+        company.setName(companyPatchDto.getName());
+        company.setSurname(companyPatchDto.getSurname());
+        company.setPhoneNumber(companyPatchDto.getPhoneNumber());
+
+        // Company class fields
+        company.setAddress(companyPatchDto.getAddress());
+        company.setDescription(companyPatchDto.getDescription());
+        company.setLogoUrl(companyPatchDto.getLogoUrl());
 
         return company;
     }

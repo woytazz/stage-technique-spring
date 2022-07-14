@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.technique.stage.account.repository.AdminRepository;
 import pl.technique.stage.entity.Admin;
+import pl.technique.stage.exception.AccountNotFoundException;
 import pl.technique.stage.util.hash.HashGenerator;
 
 import java.util.List;
@@ -27,12 +28,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin readAdminByLogin(String login) {
-        //TODO throw exc
-        return repository.findByLogin(login).orElseThrow();
+        return repository.findByLogin(login)
+                .orElseThrow(AccountNotFoundException::new);
     }
 
     @Override
     public List<Admin> readAllAdmin() {
         return repository.findAll();
+    }
+
+    @Override
+    public void updateAdmin(String login, Admin admin, String ETag) {
+        repository.updateAdmin(login, admin, ETag);
     }
 }

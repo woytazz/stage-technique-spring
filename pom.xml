@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pl</groupId>
-	<artifactId>technique.stage</artifactId>
+	<artifactId>technique-stage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Stage Technique</name>
 	<description>Backend for Stage Technique in Spring Boot</description>
