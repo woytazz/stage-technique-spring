@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.technique.stage.exception.UpdateException;
+import pl.technique.stage.entity.Account;
+import pl.technique.stage.entity.Company;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
@@ -24,8 +26,19 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         body.put("status", httpStatus.value());
         body.put("error", httpStatus.getReasonPhrase());
-        body.put("message", "Data Integrity Violation Exception");
-
+        if (Objects.requireNonNull(exception.getMessage()).contains(Account.CONSTRAINT_LOGIN_UNIQUE)) {
+            body.put("message", Account.CONSTRAINT_LOGIN_UNIQUE);
+        } else if (exception.getMessage().contains(Account.CONSTRAINT_EMAIL_UNIQUE)) {
+            body.put("message", Account.CONSTRAINT_EMAIL_UNIQUE);
+        } else if (exception.getMessage().contains(Company.CONSTRAINT_COMPANY_NAME_UNIQUE)) {
+            body.put("message", Company.CONSTRAINT_COMPANY_NAME_UNIQUE);
+        } else if (exception.getMessage().contains(Company.CONSTRAINT_NIP_UNIQUE)) {
+            body.put("message", Company.CONSTRAINT_NIP_UNIQUE);
+        } else if (exception.getMessage().contains(Company.CONSTRAINT_ADDRESS_UNIQUE)) {
+            body.put("message", Company.CONSTRAINT_ADDRESS_UNIQUE);
+        } else {
+            body.put("message", "Data Integrity Violation Exception");
+        }
         return new ResponseEntity<>(body, httpStatus);
     }
 

@@ -7,12 +7,23 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
+import static pl.technique.stage.entity.Account.CONSTRAINT_EMAIL_UNIQUE;
+import static pl.technique.stage.entity.Account.CONSTRAINT_LOGIN_UNIQUE;
+
 @Entity
-@Table(name = "account")
+@Table(
+        name = "account",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "login", name = CONSTRAINT_LOGIN_UNIQUE),
+                @UniqueConstraint(columnNames = "email", name = CONSTRAINT_EMAIL_UNIQUE)
+        })
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account extends AbstractEntity {
+    public static final String CONSTRAINT_LOGIN_UNIQUE = "account_login_unique";
+    public static final String CONSTRAINT_EMAIL_UNIQUE = "account_email_unique";
+
     @Basic(optional = false)
-    @Column(name = "login", unique = true)
+    @Column(name = "login")
     @Size(min = 4, max = 16)
     @Getter
     @Setter
@@ -54,7 +65,7 @@ public abstract class Account extends AbstractEntity {
     @Basic(optional = false)
     @Size(min = 1, max = 256)
     @Email
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     @Getter
     @Setter
     private String email;

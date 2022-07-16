@@ -5,6 +5,6 @@ import pl.technique.stage.entity.Admin;
 
 import java.util.Optional;
 
-public interface AdminRepository extends JpaRepository<Admin, Long>, AdminUpdateRepository {
+public interface AdminRepository extends JpaRepository<Admin, Long> {
     Optional<Admin> findByLogin(String login);
 }

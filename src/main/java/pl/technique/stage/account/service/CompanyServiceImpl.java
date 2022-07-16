@@ -2,9 +2,11 @@ package pl.technique.stage.account.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.technique.stage.account.repository.CompanyRepository;
 import pl.technique.stage.entity.Company;
 import pl.technique.stage.exception.AccountNotFoundException;
+import pl.technique.stage.exception.UpdateException;
 import pl.technique.stage.util.hash.HashGenerator;
 
 import java.util.List;
@@ -43,8 +45,23 @@ public class CompanyServiceImpl implements CompanyService {
         return repository.findAll();
     }
 
+    @Transactional
     @Override
     public void updateCompany(String login, Company company, String ETag) {
-        repository.updateCompany(login, company, ETag);
+        Company dbCompany = repository.findByLogin(login)
+                .orElseThrow(AccountNotFoundException::new);
+
+        if (ETag.equals(hashGenerator.generateHMAC(dbCompany.getLogin(), dbCompany.getVersion()))) {
+            dbCompany.setName(company.getName());
+            dbCompany.setSurname(company.getSurname());
+            dbCompany.setPhoneNumber(company.getPhoneNumber());
+            dbCompany.setAddress(company.getAddress());
+            dbCompany.setDescription(company.getDescription());
+            dbCompany.setLogoUrl(company.getLogoUrl());
+
+            repository.save(dbCompany);
+        } else {
+            throw new UpdateException();
+        }
     }
 }

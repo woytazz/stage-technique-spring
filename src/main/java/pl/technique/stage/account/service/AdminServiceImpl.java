@@ -2,9 +2,11 @@ package pl.technique.stage.account.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.technique.stage.account.repository.AdminRepository;
 import pl.technique.stage.entity.Admin;
 import pl.technique.stage.exception.AccountNotFoundException;
+import pl.technique.stage.exception.UpdateException;
 import pl.technique.stage.util.hash.HashGenerator;
 
 import java.util.List;
@@ -37,8 +39,20 @@ public class AdminServiceImpl implements AdminService {
         return repository.findAll();
     }
 
+    @Transactional
     @Override
     public void updateAdmin(String login, Admin admin, String ETag) {
-        repository.updateAdmin(login, admin, ETag);
+        Admin dbAdmin = repository.findByLogin(login)
+                .orElseThrow(AccountNotFoundException::new);
+
+        if (ETag.equals(hashGenerator.generateHMAC(dbAdmin.getLogin(), dbAdmin.getVersion()))) {
+            dbAdmin.setName(admin.getName());
+            dbAdmin.setSurname(admin.getSurname());
+            dbAdmin.setPhoneNumber(admin.getPhoneNumber());
+
+            repository.save(dbAdmin);
+        } else {
+            throw new UpdateException();
+        }
     }
 }
