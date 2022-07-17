@@ -1,6 +1,7 @@
 package pl.technique.stage.account.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.technique.stage.account.repository.ClientRepository;
@@ -14,17 +15,19 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository repository;
+    private final PasswordEncoder passwordEncoder;
     private final HashGenerator hashGenerator;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository repository, HashGenerator hashGenerator) {
+    public ClientServiceImpl(ClientRepository repository, PasswordEncoder passwordEncoder, HashGenerator hashGenerator) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
         this.hashGenerator = hashGenerator;
     }
 
     @Override
     public void createClient(Client client) {
-        client.setPassword(hashGenerator.generateHash(client.getPassword()));
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
         repository.save(client);
     }
 

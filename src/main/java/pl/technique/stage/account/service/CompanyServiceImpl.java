@@ -1,6 +1,7 @@
 package pl.technique.stage.account.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.technique.stage.account.repository.CompanyRepository;
@@ -14,17 +15,19 @@ import java.util.List;
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository repository;
+    private final PasswordEncoder passwordEncoder;
     private final HashGenerator hashGenerator;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository repository, HashGenerator hashGenerator) {
+    public CompanyServiceImpl(CompanyRepository repository, PasswordEncoder passwordEncoder, HashGenerator hashGenerator) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
         this.hashGenerator = hashGenerator;
     }
 
     @Override
     public void createCompany(Company company) {
-        company.setPassword(hashGenerator.generateHash(company.getPassword()));
+        company.setPassword(passwordEncoder.encode(company.getPassword()));
         repository.save(company);
     }
 

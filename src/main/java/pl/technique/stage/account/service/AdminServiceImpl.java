@@ -1,6 +1,7 @@
 package pl.technique.stage.account.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.technique.stage.account.repository.AdminRepository;
@@ -14,17 +15,19 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository repository;
+    private final PasswordEncoder passwordEncoder;
     private final HashGenerator hashGenerator;
 
     @Autowired
-    public AdminServiceImpl(AdminRepository repository, HashGenerator hashGenerator) {
+    public AdminServiceImpl(AdminRepository repository, PasswordEncoder passwordEncoder, HashGenerator hashGenerator) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
         this.hashGenerator = hashGenerator;
     }
 
     @Override
     public void createAdmin(Admin admin) {
-        admin.setPassword(hashGenerator.generateHash(admin.getPassword()));
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         repository.save(admin);
     }
 
