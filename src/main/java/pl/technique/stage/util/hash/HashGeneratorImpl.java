@@ -11,7 +11,7 @@ import java.util.Formatter;
 
 @Component
 public class HashGeneratorImpl implements HashGenerator {
-    private final String SECRET_KEY = "Al-BNmoM80nHDaE2rCMlFAzRxXJtvRC6jzblTKr1vOc";
+    private static final String SECRET_KEY = "Al-BNmoM80nHDaE2rCMlFAzRxXJtvRC6jzblTKr1vOc";
 
     private final String HMAC_SHA256 = "HmacSHA256";
 

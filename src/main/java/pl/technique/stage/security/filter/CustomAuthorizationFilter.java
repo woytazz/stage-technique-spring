@@ -18,35 +18,35 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
-    public final static String BEARER = "Bearer ";
+    public static final String BEARER = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-            if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
-                String token = authorizationHeader.substring(BEARER.length());
+        if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
+            String token = authorizationHeader.substring(BEARER.length());
 
-                if (JWTGeneratorVerifier.validateJWTSignature(token)) {
-                    Claims claims = JWTGeneratorVerifier.decodeJWT(token);
-                    String username = claims.getSubject();
-                    String roles = (String) claims.get("roles");
-                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    Arrays.stream(roles.split(",")).forEach(role -> {
-                        authorities.add(new SimpleGrantedAuthority(role));
-                    });
+            if (JWTGeneratorVerifier.validateJWTSignature(token)) {
+                Claims claims = JWTGeneratorVerifier.decodeJWT(token);
+                String username = claims.getSubject();
+                String roles = (String) claims.get("roles");
+                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                Arrays.stream(roles.split(",")).forEach(role ->
+                    authorities.add(new SimpleGrantedAuthority(role))
+                );
 
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, authorities);
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-                    filterChain.doFilter(request, response);
-                } else {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                }
-            } else {
                 filterChain.doFilter(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
             }
+        } else {
+            filterChain.doFilter(request, response);
+        }
     }
 }

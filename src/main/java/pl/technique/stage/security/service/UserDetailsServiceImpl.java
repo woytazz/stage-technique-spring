@@ -15,7 +15,7 @@ import java.util.Collection;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final String EXCEPTION_MESSAGE = "Bad username";
+    private static final String EXCEPTION_MESSAGE = "Bad username";
     private final AccountRepository repository;
 
     @Autowired
