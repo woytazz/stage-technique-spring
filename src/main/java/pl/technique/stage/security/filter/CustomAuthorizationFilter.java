@@ -13,9 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Stream;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     public static final String BEARER = "Bearer ";
@@ -31,10 +30,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 Claims claims = JWTGeneratorVerifier.decodeJWT(token);
                 String username = claims.getSubject();
                 String roles = (String) claims.get("roles");
-                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                Arrays.stream(roles.split(",")).forEach(role ->
-                    authorities.add(new SimpleGrantedAuthority(role))
-                );
+                Collection<SimpleGrantedAuthority> authorities = Stream.of(roles.split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .toList();
 
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(username, null, authorities);
